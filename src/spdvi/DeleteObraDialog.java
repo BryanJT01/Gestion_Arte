@@ -48,6 +48,11 @@ public class DeleteObraDialog extends javax.swing.JDialog {
         });
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,6 +89,17 @@ public class DeleteObraDialog extends javax.swing.JDialog {
         
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+       Obra selectedObra = (Obra) comboBox.getSelectedItem();
+       mainForm.obras.remove(selectedObra);
+       mainForm.UpdateObraListView();
+       mainForm.lstObras.setSelectedIndex(0);
+       mainForm.lstObras.validate();
+       UpdateObraComboModel();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+    
+    
     private void UpdateObraComboModel() {
         
         DefaultComboBoxModel<Obra> obraComboBoxModel = new DefaultComboBoxModel<Obra>();

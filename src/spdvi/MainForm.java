@@ -233,8 +233,8 @@ public class MainForm extends javax.swing.JFrame {
                     try {
                         BufferedImage bufferedImage;
                         if (o.getImagen() == (null)) {
-                           String noImageFileString = getClass().getResource(imageFolder + 1).toString();
-                           bufferedImage = ImageIO.read(getClass().getResource(imageFolder + 1)); 
+                           //String noImageFileString = getClass().getResource(imageFolder + 1).toString();
+                           bufferedImage = ImageIO.read(getClass().getResource(imageFolder)); 
                         }
                         else {
                             String imagePath = imageFolder + o.getImagen();

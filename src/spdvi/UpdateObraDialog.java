@@ -4,29 +4,26 @@
  */
 package spdvi;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 /**
  *
  * @author bryan
  */
 public class UpdateObraDialog extends javax.swing.JDialog {
-    //private final RevisarIBDialog revIB;
+    private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
+    private final MainForm mainForm;
     private String codigo;
-    public Obra obra;
     /**
      * Creates new form UpdateObraDialog
      */
     public UpdateObraDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        //revIB = (RevisarIBDialog) this.getParent();
+        mainForm = (MainForm) this.getParent();
         initComponents();
-    }
-
-     public Obra getObra() {
-        return obra;
-    }
-
-    public void setObra(Obra obra) {
-        this.obra = obra;
     }
     
     public String getCodigo() {
@@ -51,7 +48,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         lblRegistro = new javax.swing.JLabel();
         btnLoadImage = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
-        btnInsertar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         lblAny = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         lblFormato = new javax.swing.JLabel();
@@ -105,10 +102,10 @@ public class UpdateObraDialog extends javax.swing.JDialog {
 
         lblTitulo.setText("Titulo");
 
-        btnInsertar.setText("Actualizar");
-        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsertarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -174,7 +171,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                             .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(21, 21, 21))
@@ -208,7 +205,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInsertar)
+                    .addComponent(btnActualizar)
                     .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,13 +237,15 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
-    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
        
-    }//GEN-LAST:event_btnInsertarActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+        mainForm.setConfirmSave(false);
+        this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtTituloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusGained
@@ -267,7 +266,27 @@ public class UpdateObraDialog extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        lblCodigo.setText(this.getCodigo());
+        String codigo = this.getCodigo();
+        lblCodigo.setText(codigo);
+        for (Obra o: mainForm.obras) {
+            if (o.getRegistre().equals("IB" + codigo)){
+                lblCodigo.setText(o.getRegistre());
+                txtTitulo.setText(o.getTitol());
+                txtAny.setText(o.getAny());
+                txtFormato.setText(o.getFormat());
+                txtAutor.setText(o.getAutor());
+                try {
+                    BufferedImage selectedImage;
+                    if (o.getImagen() != null) {
+                        selectedImage = ImageIO.read(new File(imageFolder + o.getImagen()));
+                        lblObraImage.setIcon(mainForm.resizeImageIcon(selectedImage, lblObraImage.getWidth(), lblObraImage.getHeight()));
+                    }
+                } catch (IOException ex) {
+                    ex.getStackTrace();
+                }
+
+            }
+        }
     }//GEN-LAST:event_formWindowOpened
 
     /**
@@ -313,8 +332,8 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnLoadImage;
     private javax.swing.JLabel lblAny;
     private javax.swing.JLabel lblAutor;
