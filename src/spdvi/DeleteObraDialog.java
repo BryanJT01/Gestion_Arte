@@ -4,17 +4,35 @@
  */
 package spdvi;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+
 /**
  *
  * @author bryan
  */
 public class DeleteObraDialog extends javax.swing.JDialog {
-
+    private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
+    ArrayList<Obra> obras = new ArrayList<Obra>();
+    private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
+    private JList<Obra> lstObras;
     /**
      * Creates new form DeleteObraDialog
      */
     public DeleteObraDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        //cmbObras = new JComboBox(lstObras);
+        lstObras = new JList<Obra>();
         initComponents();
     }
 
@@ -27,16 +45,18 @@ public class DeleteObraDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbObras = new javax.swing.JComboBox<>();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cmbObras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cmbObrasActionPerformed(evt);
             }
         });
+
+        btnDelete.setText("Delete");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -44,23 +64,50 @@ public class DeleteObraDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbObras, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(248, Short.MAX_VALUE))
+                .addComponent(cmbObras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addComponent(btnDelete)
+                .addGap(28, 28, 28))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void UpdateObraListView() {
+
+        //DefaultListModel<Obra> obraListModel = new DefaultListModel<Obra>();
+        ArrayList<Obra> obraLista = new ArrayList<Obra>();
+        for(Obra o: obras) {
+            obraLista.add(o);
+        }
+        cmbObras.setModel(new DefaultComboBoxModel(obraLista.toArray()));
+        //lstObras.setModel(obraListModel);      
+    }
+    
+    private void cmbObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbObrasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        Gson gson = new Gson();
+        try {
+            obras.clear();
+            JsonReader reader = new JsonReader(new FileReader(dataFile));
+            obras = gson.fromJson(reader, LIST_OF_OBRA_TYPE);
+            UpdateObraListView();
+        }
+        catch(FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+        }
+                    
+        //cmbObras = new JComboBox(lstObras.);
+    }//GEN-LAST:event_cmbObrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -105,6 +152,7 @@ public class DeleteObraDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JComboBox<String> cmbObras;
     // End of variables declaration//GEN-END:variables
 }

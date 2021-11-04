@@ -5,43 +5,40 @@
 package spdvi;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import spdvi.Obra;
 
 /**
  *
  * @author bryan
  */
 public class InsertarObraDialog extends javax.swing.JDialog {
+    private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
-    private JFileChooser fchUserImageChooser;
-    final static String defaultImage = "defaultImage.jpg";
+    private JFileChooser fileChooser;
+    private final MainForm mainForm;
     ArrayList<Obra> obras = new ArrayList<Obra>();
+    //ArrayList<Obra> obras = new ArrayList<Obra>();
+        
     /**
      * Creates new form InsertarObraDialog
      */
     public InsertarObraDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        fchUserImageChooser = new JFileChooser();
         initComponents();
+        mainForm = (MainForm) this.getParent();
     }
 
     /**
@@ -68,6 +65,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
         btnInsertar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
+        lblImageName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -185,13 +183,15 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                             .addComponent(lblFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnLoadImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblImageName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -215,11 +215,14 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                 .addGap(7, 7, 7)
                 .addComponent(lblFormato)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLoadImage))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblAutor)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLoadImage))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblAutor))
+                    .addComponent(lblImageName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,50 +279,23 @@ public class InsertarObraDialog extends javax.swing.JDialog {
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         // TODO add your handling code here:
-        Obra newObra = new Obra();
-        try { if (txtRegistro.getText().length() != 8 ) {
+        //String registre, String titol, String any, String format, String autor, String imatge
+       if (txtRegistro.getText().length() != 8 ) {
                 lblError.setText("El registro tiene 8 numeros");
             } else if(!isNumber(txtRegistro.getText())){
                 lblError.setText("El registro esta formado solo por numeros");
             } else {
             lblError.setText("Ok");
-            newObra.setRegistre("IB" + txtRegistro.getText());
-            newObra.setTitol(txtTitulo.getText());
-            newObra.setAny(txtAny.getText());
-            newObra.setFormat(txtFormato.getText());
-            newObra.setAutor(txtAutor.getText());
-            if (fchUserImageChooser.getSelectedFile() == null) {
-                newObra.setImagen(defaultImage);
-            }
-            else {
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
-                    newObra.setPictureModified(true);
-                    String fileName = fchUserImageChooser.getSelectedFile().getName();
-                    String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-                    newObra.setImagen(newObra.getRegistre() + "." + extension);  
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
             
-            System.out.print(newObra.toString());
-            obras.add(newObra);
-            
-            try (Writer writer = new FileWriter(dataFile)) {
-        Gson gson = new GsonBuilder().create();
-        gson.toJson(obras, writer);
-        } catch (IOException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
-        }
-        catch (Exception ex) {
-            //ErrorMessageDialog encuesta = new ErrorMessageDialog(this, true);
-            //encuesta.getLblMessage().setText(ex.getMessage());
-            //encuesta.setVisible(true);
-        }
+       Obra newObra = new Obra("IB" + txtRegistro.getText(), txtTitulo.getText(), txtAny.getText(), txtFormato.getText(), txtAutor.getText(), lblImageName.getText());
+       mainForm.obras.add(newObra);
+       mainForm.UpdateObraListView();
+       
+       mainForm.setConfirmSave(true);
+       this.setVisible(false); }
     }//GEN-LAST:event_btnInsertarActionPerformed
+
+    
 
     private static boolean isNumber(String n) {
 		try {
@@ -328,54 +304,40 @@ public class InsertarObraDialog extends javax.swing.JDialog {
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
-	}
+	} 
     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+        mainForm.setConfirmSave(false);
+        this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
-        int result = fchUserImageChooser.showOpenDialog(this);
+        fileChooser = new JFileChooser();
+        String userFolder = System.getProperty("user.home");
+        int result = fileChooser.showOpenDialog(this);
+        String name = fileChooser.getSelectedFile().getName();
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
-                ImageIcon icon = resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
+                BufferedImage bufferedImage;
+                bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                lblImageName.setText(name);
+                
+                
+                String outputImagePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
+                ImageIcon icon = mainForm.resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
                 lblObraImage.setIcon(icon);
-                for (Obra o: obras) {
-                    if (o.getRegistre().equals(txtRegistro.getText())) {
-                        o.setPictureModified(true);
-                        o.setOldPictureFileName(o.getImagen());
-                        String fileName = fchUserImageChooser.getSelectedFile().getName();
-                        String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-                        o.setImagen(o.getRegistre() + "." + extension);
-                    }
-                }
+                
+                File outputImage = new File(outputImagePath);
+                ImageIO.write(bufferedImage, "jpg", outputImage);
             }
             catch (IOException ioe) {
                 ioe.printStackTrace();
-            }
+            }   
         }
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
-    private ImageIcon resizeImageIcon (BufferedImage originalImage, int desiredWidth, int desiredHeight) {
-        int newHeight = 0;    
-        int newWidth = 0;
-        float aspectRatio = (float)originalImage.getWidth() / originalImage.getHeight();
-        if (originalImage.getWidth() > originalImage.getHeight()) {
-            newWidth = desiredWidth;
-            newHeight = Math.round( desiredWidth / aspectRatio);                
-        }
-        else {
-            newHeight = desiredHeight;
-            newWidth = Math.round(desiredHeight * aspectRatio);
-        }
-        Image resultingImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-        ImageIcon imageIcon = new ImageIcon(outputImage);
-        return imageIcon;
-    }
     
     /**
      * @param args the command line arguments
@@ -428,6 +390,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblFormato;
+    private javax.swing.JLabel lblImageName;
     private javax.swing.JLabel lblObraImage;
     private javax.swing.JLabel lblRegistro;
     private javax.swing.JLabel lblTitulo;

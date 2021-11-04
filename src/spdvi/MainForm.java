@@ -133,7 +133,7 @@ public class MainForm extends javax.swing.JFrame {
 
         mnuCRUD.setText("CRUD");
 
-        mniInsert.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniInsert.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mniInsert.setText("Insertar ");
         mniInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +153,11 @@ public class MainForm extends javax.swing.JFrame {
 
         mniUpdate.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         mniUpdate.setText("Actualizar");
+        mniUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniUpdateActionPerformed(evt);
+            }
+        });
         mnuCRUD.add(mniUpdate);
 
         mniDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -175,11 +180,11 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(102, 102, 102)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
@@ -205,7 +210,7 @@ public class MainForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UpdateObraListView() {
+    public void UpdateObraListView() {
 
         DefaultListModel<Obra> obraListModel = new DefaultListModel<Obra>();
         for(Obra o: obras) {
@@ -241,7 +246,7 @@ public class MainForm extends javax.swing.JFrame {
         }
     }
     
-    private ImageIcon resizeImageIcon (BufferedImage originalImage, int desiredWidth, int desiredHeight) {
+    public ImageIcon resizeImageIcon (BufferedImage originalImage, int desiredWidth, int desiredHeight) {
         int newHeight = 0;    
         int newWidth = 0;
         float aspectRatio = (float)originalImage.getWidth() / originalImage.getHeight();
@@ -262,6 +267,7 @@ public class MainForm extends javax.swing.JFrame {
     
     private void mniInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniInsertActionPerformed
         // TODO add your handling code here:
+        btnInsert.doClick();
     }//GEN-LAST:event_mniInsertActionPerformed
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
@@ -270,14 +276,14 @@ public class MainForm extends javax.swing.JFrame {
         InsertDialog.setVisible(true);
         
         if (this.confirmSave) {
-            try (Writer writer = new FileWriter(dataFile)) {
+        try (Writer writer = new FileWriter(dataFile)) {
         Gson gson = new GsonBuilder().create();
         gson.toJson(obras, writer);
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         UpdateObraListView();
-            dataChanged = true;
+        dataChanged = true;
         } 
     }//GEN-LAST:event_btnInsertActionPerformed
 
@@ -301,12 +307,29 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        DeleteObraDialog DeleteDialog = new DeleteObraDialog(this, true);
+        DeleteDialog.setVisible(true);
+        
+        /*if (this.confirmSave) {
+            try (Writer writer = new FileWriter(dataFile)) {
+        Gson gson = new GsonBuilder().create();
+        gson.toJson(obras, writer);
+        } catch (IOException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        UpdateObraListView();
+            dataChanged = true;
+        } */
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void mniLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLoadActionPerformed
         // TODO add your handling code here:
         btnLoad.doClick();
     }//GEN-LAST:event_mniLoadActionPerformed
+
+    private void mniUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mniUpdateActionPerformed
 
     /**
      * @param args the command line arguments

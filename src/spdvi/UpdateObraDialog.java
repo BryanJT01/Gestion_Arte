@@ -225,73 +225,13 @@ public class UpdateObraDialog extends javax.swing.JDialog {
 
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
-        int result = fchUserImageChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            try {
-                BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
-                ImageIcon icon = resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
-                lblObraImage.setIcon(icon);
-                for (Obra o: obras) {
-                    if (o.getRegistre().equals(txtRegistro.getText())) {
-                        o.setPictureModified(true);
-                        o.setOldPictureFileName(o.getImagen());
-                        String fileName = fchUserImageChooser.getSelectedFile().getName();
-                        String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-                        o.setImagen(o.getRegistre() + "." + extension);
-                    }
-                }
-            }
-            catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        }
+        
+        
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
         // TODO add your handling code here:
-        Obra newObra = new Obra();
-        try { if (txtRegistro.getText().length() != 8 ) {
-            lblError.setText("El registro tiene 8 numeros");
-        } else if(!isNumber(txtRegistro.getText())){
-            lblError.setText("El registro esta formado solo por numeros");
-        } else {
-            lblError.setText("Ok");
-            newObra.setRegistre("IB" + txtRegistro.getText());
-            newObra.setTitol(txtTitulo.getText());
-            newObra.setAny(txtAny.getText());
-            newObra.setFormat(txtFormato.getText());
-            newObra.setAutor(txtAutor.getText());
-            if (fchUserImageChooser.getSelectedFile() == null) {
-                newObra.setImagen(defaultImage);
-            }
-            else {
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
-                    newObra.setPictureModified(true);
-                    String fileName = fchUserImageChooser.getSelectedFile().getName();
-                    String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-                    newObra.setImagen(newObra.getRegistre() + "." + extension);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
-
-            System.out.print(newObra.toString());
-            obras.add(newObra);
-
-            try (Writer writer = new FileWriter(dataFile)) {
-                Gson gson = new GsonBuilder().create();
-                gson.toJson(obras, writer);
-            } catch (IOException ex) {
-                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        }
-        catch (Exception ex) {
-            //ErrorMessageDialog encuesta = new ErrorMessageDialog(this, true);
-            //encuesta.getLblMessage().setText(ex.getMessage());
-            //encuesta.setVisible(true);
-        }
+       
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

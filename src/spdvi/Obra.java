@@ -13,6 +13,15 @@ import java.awt.image.BufferedImage;
  */
 public class Obra {
 
+    public Obra(String registre, String titol, String any, String format, String autor, String imatge) {
+        this.registre = registre;
+        this.titol = titol;
+        this.any = any;
+        this.format = format;
+        this.autor = autor;
+        this.imatge = imatge;
+    }
+
     public String getRegistre() {
         return registre;
     }
@@ -64,14 +73,6 @@ public class Obra {
     public void setPictureModified(boolean pictureModified) {
         this.pictureModified = pictureModified;
     }
-    
-    /*public BufferedImage getPicture() {
-        return picture;
-    }
-
-    public void setPicture(BufferedImage picture) {
-        this.picture = picture;
-    }*/
 
     public String getOldPictureFileName() {
         return oldPictureFileName;
@@ -82,7 +83,6 @@ public class Obra {
     }
     
     private String oldPictureFileName;
-    //private BufferedImage picture;
     private boolean pictureModified = false;
     private String registre;
     private String titol;
