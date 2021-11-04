@@ -36,8 +36,8 @@ public class MainForm extends javax.swing.JFrame {
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
     private boolean dataChanged = false;
-     private boolean confirmSave = false;
-    private JList<Obra> lstObras;
+    private boolean confirmSave = false;
+    public JList<Obra> lstObras;
     ArrayList<Obra> obras = new ArrayList<Obra>();
     /**
      * Creates new form MainForm
@@ -120,6 +120,12 @@ public class MainForm extends javax.swing.JFrame {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
             }
         });
 
@@ -272,6 +278,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
+        btnLoad.doClick();
         InsertarObraDialog InsertDialog = new InsertarObraDialog(this, true);
         InsertDialog.setVisible(true);
         
@@ -303,23 +310,16 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        btnLoad.doClick();
+        RevisarIBDialog RevisarDialog = new RevisarIBDialog(this, true);
+        RevisarDialog.setVisible(true);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        btnLoad.doClick();
         DeleteObraDialog DeleteDialog = new DeleteObraDialog(this, true);
         DeleteDialog.setVisible(true);
-        
-        /*if (this.confirmSave) {
-            try (Writer writer = new FileWriter(dataFile)) {
-        Gson gson = new GsonBuilder().create();
-        gson.toJson(obras, writer);
-        } catch (IOException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        UpdateObraListView();
-            dataChanged = true;
-        } */
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void mniLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLoadActionPerformed
@@ -330,6 +330,23 @@ public class MainForm extends javax.swing.JFrame {
     private void mniUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mniUpdateActionPerformed
+
+    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
+        // TODO add your handling code here:
+        Obra selectedObra = lstObras.getSelectedValue();
+        if (selectedObra != null) {
+            for (Obra o: obras) {
+                if (o.getRegistre().equals(selectedObra.getRegistre())) {
+                    UpdateObraDialog updateDialog = new UpdateObraDialog(this, true);
+                    updateDialog.setCodigo(o.getRegistre());
+                    
+                    updateDialog.setVisible(true);
+                    
+                }
+            }            
+        }
+    
+    }//GEN-LAST:event_jScrollPane1MouseClicked
 
     /**
      * @param args the command line arguments

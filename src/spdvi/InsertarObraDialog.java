@@ -29,7 +29,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private JFileChooser fileChooser;
     private final MainForm mainForm;
-    ArrayList<Obra> obras = new ArrayList<Obra>();
+    //ArrayList<Obra> obras = new ArrayList<Obra>();
     //ArrayList<Obra> obras = new ArrayList<Obra>();
         
     /**
@@ -285,6 +285,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
             } else if(!isNumber(txtRegistro.getText())){
                 lblError.setText("El registro esta formado solo por numeros");
             } else {
+                
             lblError.setText("Ok");
             
        Obra newObra = new Obra("IB" + txtRegistro.getText(), txtTitulo.getText(), txtAny.getText(), txtFormato.getText(), txtAutor.getText(), lblImageName.getText());

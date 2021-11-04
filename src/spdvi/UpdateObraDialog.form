@@ -8,6 +8,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -28,17 +31,17 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="lblError" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtAny" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
-                          <Component id="txtTitulo" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
-                          <Component id="txtRegistro" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtAny" alignment="0" pref="128" max="32767" attributes="0"/>
+                          <Component id="txtTitulo" alignment="0" pref="128" max="32767" attributes="0"/>
                           <Component id="lblTitulo" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
                           <Component id="lblAny" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
-                          <Component id="txtAutor" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="txtAutor" alignment="0" pref="128" max="32767" attributes="0"/>
                           <Component id="lblAutor" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
-                          <Component id="txtFormato" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="txtFormato" alignment="0" pref="128" max="32767" attributes="0"/>
                           <Component id="lblFormato" alignment="0" min="-2" pref="83" max="-2" attributes="0"/>
                           <Component id="lblRegistro" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                          <Component id="lblCodigo" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -63,8 +66,8 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblRegistro" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtRegistro" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblCodigo" min="-2" pref="18" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -173,15 +176,6 @@
         <Property name="text" type="java.lang.String" value="Autor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtRegistro">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="" noResource="true"/>
-      </Properties>
-      <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtRegistroFocusGained"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtRegistroActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JTextField" name="txtTitulo">
       <Properties>
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
@@ -199,6 +193,8 @@
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtAnyFocusGained"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAnyActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblCodigo">
     </Component>
   </SubComponents>
 </Form>

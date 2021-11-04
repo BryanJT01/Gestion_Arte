@@ -70,20 +70,6 @@ public class Obra {
         this.imatge = imagen;
     }
     
-    public void setPictureModified(boolean pictureModified) {
-        this.pictureModified = pictureModified;
-    }
-
-    public String getOldPictureFileName() {
-        return oldPictureFileName;
-    }
-
-    public void setOldPictureFileName(String oldPictureFileName) {
-        this.oldPictureFileName = oldPictureFileName;
-    }
-    
-    private String oldPictureFileName;
-    private boolean pictureModified = false;
     private String registre;
     private String titol;
     private String any;

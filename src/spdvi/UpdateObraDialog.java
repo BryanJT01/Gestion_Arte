@@ -9,15 +9,33 @@ package spdvi;
  * @author bryan
  */
 public class UpdateObraDialog extends javax.swing.JDialog {
-
+    //private final RevisarIBDialog revIB;
+    private String codigo;
+    public Obra obra;
     /**
      * Creates new form UpdateObraDialog
      */
     public UpdateObraDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        //revIB = (RevisarIBDialog) this.getParent();
         initComponents();
     }
 
+     public Obra getObra() {
+        return obra;
+    }
+
+    public void setObra(Obra obra) {
+        this.obra = obra;
+    }
+    
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,11 +57,16 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         lblFormato = new javax.swing.JLabel();
         lblError = new javax.swing.JLabel();
         lblAutor = new javax.swing.JLabel();
-        txtRegistro = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
         txtAny = new javax.swing.JTextField();
+        lblCodigo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         txtFormato.setName(""); // NOI18N
         txtFormato.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -102,18 +125,6 @@ public class UpdateObraDialog extends javax.swing.JDialog {
 
         lblAutor.setText("Autor");
 
-        txtRegistro.setName(""); // NOI18N
-        txtRegistro.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtRegistroFocusGained(evt);
-            }
-        });
-        txtRegistro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRegistroActionPerformed(evt);
-            }
-        });
-
         txtTitulo.setName(""); // NOI18N
         txtTitulo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -147,17 +158,17 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtAny, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtAny, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(txtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                             .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAny, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAutor, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                             .addComponent(lblAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFormato, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                             .addComponent(lblFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,8 +186,8 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblRegistro)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblTitulo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -238,15 +249,6 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void txtRegistroFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRegistroFocusGained
-        // TODO add your handling code here:
-        txtRegistro.selectAll();
-    }//GEN-LAST:event_txtRegistroFocusGained
-
-    private void txtRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegistroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRegistroActionPerformed
-
     private void txtTituloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTituloFocusGained
@@ -262,6 +264,11 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private void txtAnyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAnyActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        lblCodigo.setText(this.getCodigo());
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -311,6 +318,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnLoadImage;
     private javax.swing.JLabel lblAny;
     private javax.swing.JLabel lblAutor;
+    private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblFormato;
     private javax.swing.JLabel lblObraImage;
@@ -319,7 +327,6 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtAny;
     private javax.swing.JTextField txtAutor;
     private javax.swing.JTextField txtFormato;
-    private javax.swing.JTextField txtRegistro;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
