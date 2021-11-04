@@ -37,7 +37,6 @@ public class MainForm extends javax.swing.JFrame {
     private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
-    public String registroIB;
     private boolean dataChanged = false;
     private boolean confirmSave = false;
     public JList<Obra> lstObras;

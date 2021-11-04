@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -243,21 +244,20 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
         fileChooser = new JFileChooser();
-        String userFolder = System.getProperty("user.home");
         int result = fileChooser.showOpenDialog(this);
         String name = fileChooser.getSelectedFile().getName();
         if (result == JFileChooser.APPROVE_OPTION) {
             BufferedImage bufferedImage;
             try {
                 bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
-                String outputImageAbsolutePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
+                String outputImageAbsolutePath = imageFolder + fileChooser.getSelectedFile().getName();
                 ImageIcon icon = mainForm.resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
                 lblObraImage.setIcon(icon);
                 lblImagenName.setText(name);
                 File outputImage = new File(outputImageAbsolutePath);
                 ImageIO.write(bufferedImage, "jpg", outputImage);
             } catch (IOException ex) {
-                ex.getStackTrace();
+                Logger.getLogger(InsertarObraDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -266,7 +266,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         for (Obra o: mainForm.obras) {
-            if(o.getRegistre().equals(mainForm.registroIB) ) {
+            if(o.getRegistre().equals("IB" + codigo) ) {
                 o.setRegistre(lblRegistro.getText());
                 o.setTitol(txtTitulo.getText());
                 o.setAny(txtAny.getText());
@@ -275,7 +275,9 @@ public class UpdateObraDialog extends javax.swing.JDialog {
             }
         }
         mainForm.UpdateObraListView();
-                              
+        
+        mainForm.setConfirmSave(true);
+       this.setVisible(false); 
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
