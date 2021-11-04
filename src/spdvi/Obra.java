@@ -4,6 +4,8 @@
  */
 package spdvi;
 
+import java.awt.image.BufferedImage;
+
 
 /**
  *
@@ -59,6 +61,29 @@ public class Obra {
         this.imatge = imagen;
     }
     
+    public void setPictureModified(boolean pictureModified) {
+        this.pictureModified = pictureModified;
+    }
+    
+    public BufferedImage getPicture() {
+        return picture;
+    }
+
+    public void setPicture(BufferedImage picture) {
+        this.picture = picture;
+    }
+
+    public String getOldPictureFileName() {
+        return oldPictureFileName;
+    }
+
+    public void setOldPictureFileName(String oldPictureFileName) {
+        this.oldPictureFileName = oldPictureFileName;
+    }
+    
+    private String oldPictureFileName;
+    private BufferedImage picture;
+    private boolean pictureModified = false;
     private String registre;
     private String titol;
     private String any;
