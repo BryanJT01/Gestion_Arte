@@ -61,17 +61,17 @@ public class Obra {
         this.imatge = imagen;
     }
     
-    /*public void setPictureModified(boolean pictureModified) {
+    public void setPictureModified(boolean pictureModified) {
         this.pictureModified = pictureModified;
     }
     
-    public BufferedImage getPicture() {
+    /*public BufferedImage getPicture() {
         return picture;
-    }*/
+    }
 
     public void setPicture(BufferedImage picture) {
         this.picture = picture;
-    }
+    }*/
 
     public String getOldPictureFileName() {
         return oldPictureFileName;

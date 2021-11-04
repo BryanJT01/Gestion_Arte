@@ -4,43 +4,17 @@
  */
 package spdvi;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import spdvi.Obra;
-
 /**
  *
  * @author bryan
  */
-public class InsertarObraDialog extends javax.swing.JDialog {
-    private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
-    private JFileChooser fchUserImageChooser;
-    final static String defaultImage = "defaultImage.jpg";
-    ArrayList<Obra> obras = new ArrayList<Obra>();
+public class UpdateObraDialog extends javax.swing.JDialog {
+
     /**
-     * Creates new form InsertarObraDialog
+     * Creates new form UpdateObraDialog
      */
-    public InsertarObraDialog(java.awt.Frame parent, boolean modal) {
+    public UpdateObraDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        fchUserImageChooser = new JFileChooser();
         initComponents();
     }
 
@@ -53,29 +27,76 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtFormato = new javax.swing.JTextField();
+        txtAutor = new javax.swing.JTextField();
+        lblObraImage = new javax.swing.JLabel();
         lblRegistro = new javax.swing.JLabel();
+        btnLoadImage = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
+        btnInsertar = new javax.swing.JButton();
         lblAny = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
         lblFormato = new javax.swing.JLabel();
+        lblError = new javax.swing.JLabel();
         lblAutor = new javax.swing.JLabel();
         txtRegistro = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
         txtAny = new javax.swing.JTextField();
-        txtFormato = new javax.swing.JTextField();
-        txtAutor = new javax.swing.JTextField();
-        lblObraImage = new javax.swing.JLabel();
-        btnLoadImage = new javax.swing.JButton();
-        btnInsertar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        txtFormato.setName(""); // NOI18N
+        txtFormato.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtFormatoFocusGained(evt);
+            }
+        });
+        txtFormato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFormatoActionPerformed(evt);
+            }
+        });
+
+        txtAutor.setName(""); // NOI18N
+        txtAutor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtAutorFocusGained(evt);
+            }
+        });
+        txtAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAutorActionPerformed(evt);
+            }
+        });
+
+        lblObraImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         lblRegistro.setText("Registro IB");
+
+        btnLoadImage.setText("Load image");
+        btnLoadImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadImageActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setText("Titulo");
 
+        btnInsertar.setText("Actualizar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
+
         lblAny.setText("Año");
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         lblFormato.setText("Formato");
 
@@ -117,53 +138,6 @@ public class InsertarObraDialog extends javax.swing.JDialog {
             }
         });
 
-        txtFormato.setName(""); // NOI18N
-        txtFormato.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtFormatoFocusGained(evt);
-            }
-        });
-        txtFormato.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFormatoActionPerformed(evt);
-            }
-        });
-
-        txtAutor.setName(""); // NOI18N
-        txtAutor.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtAutorFocusGained(evt);
-            }
-        });
-        txtAutor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAutorActionPerformed(evt);
-            }
-        });
-
-        lblObraImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        btnLoadImage.setText("Load image");
-        btnLoadImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadImageActionPerformed(evt);
-            }
-        });
-
-        btnInsertar.setText("Insertar");
-        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsertarActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,7 +158,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                             .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,20 +201,11 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                     .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtRegistroFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRegistroFocusGained
-        // TODO add your handling code here:
-        txtRegistro.selectAll();
-    }//GEN-LAST:event_txtRegistroFocusGained
-
-    private void txtRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegistroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRegistroActionPerformed
 
     private void txtFormatoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFormatoFocusGained
         // TODO add your handling code here:
@@ -250,22 +215,6 @@ public class InsertarObraDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFormatoActionPerformed
 
-    private void txtTituloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTituloFocusGained
-
-    private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTituloActionPerformed
-
-    private void txtAnyFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAnyFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAnyFocusGained
-
-    private void txtAnyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAnyActionPerformed
-
     private void txtAutorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAutorFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAutorFocusGained
@@ -273,66 +222,6 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private void txtAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAutorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAutorActionPerformed
-
-    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        // TODO add your handling code here:
-        Obra newObra = new Obra();
-        try { if (txtRegistro.getText().length() != 8 ) {
-                lblError.setText("El registro tiene 8 numeros");
-            } else if(!isNumber(txtRegistro.getText())){
-                lblError.setText("El registro esta formado solo por numeros");
-            } else {
-            lblError.setText("Ok");
-            newObra.setRegistre("IB" + txtRegistro.getText());
-            newObra.setTitol(txtTitulo.getText());
-            newObra.setAny(txtAny.getText());
-            newObra.setFormat(txtFormato.getText());
-            newObra.setAutor(txtAutor.getText());
-            if (fchUserImageChooser.getSelectedFile() == null) {
-                newObra.setImagen(defaultImage);
-            }
-            else {
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
-                    newObra.setPictureModified(true);
-                    String fileName = fchUserImageChooser.getSelectedFile().getName();
-                    String extension = fileName.substring(fileName.lastIndexOf('.')+1);
-                    newObra.setImagen(newObra.getRegistre() + "." + extension);  
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-            }
-            
-            System.out.print(newObra.toString());
-            obras.add(newObra);
-            
-            try (Writer writer = new FileWriter(dataFile)) {
-        Gson gson = new GsonBuilder().create();
-        gson.toJson(obras, writer);
-        } catch (IOException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
-        }
-        catch (Exception ex) {
-            //ErrorMessageDialog encuesta = new ErrorMessageDialog(this, true);
-            //encuesta.getLblMessage().setText(ex.getMessage());
-            //encuesta.setVisible(true);
-        }
-    }//GEN-LAST:event_btnInsertarActionPerformed
-
-    private static boolean isNumber(String n) {
-		try {
-			Integer.parseInt(n);
-			return true;
-		} catch (NumberFormatException nfe) {
-			return false;
-		}
-	}
-    
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
@@ -358,25 +247,82 @@ public class InsertarObraDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
-    private ImageIcon resizeImageIcon (BufferedImage originalImage, int desiredWidth, int desiredHeight) {
-        int newHeight = 0;    
-        int newWidth = 0;
-        float aspectRatio = (float)originalImage.getWidth() / originalImage.getHeight();
-        if (originalImage.getWidth() > originalImage.getHeight()) {
-            newWidth = desiredWidth;
-            newHeight = Math.round( desiredWidth / aspectRatio);                
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+        // TODO add your handling code here:
+        Obra newObra = new Obra();
+        try { if (txtRegistro.getText().length() != 8 ) {
+            lblError.setText("El registro tiene 8 numeros");
+        } else if(!isNumber(txtRegistro.getText())){
+            lblError.setText("El registro esta formado solo por numeros");
+        } else {
+            lblError.setText("Ok");
+            newObra.setRegistre("IB" + txtRegistro.getText());
+            newObra.setTitol(txtTitulo.getText());
+            newObra.setAny(txtAny.getText());
+            newObra.setFormat(txtFormato.getText());
+            newObra.setAutor(txtAutor.getText());
+            if (fchUserImageChooser.getSelectedFile() == null) {
+                newObra.setImagen(defaultImage);
+            }
+            else {
+                try {
+                    BufferedImage bufferedImage = ImageIO.read(new File(fchUserImageChooser.getSelectedFile().getAbsolutePath()));
+                    newObra.setPictureModified(true);
+                    String fileName = fchUserImageChooser.getSelectedFile().getName();
+                    String extension = fileName.substring(fileName.lastIndexOf('.')+1);
+                    newObra.setImagen(newObra.getRegistre() + "." + extension);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+
+            System.out.print(newObra.toString());
+            obras.add(newObra);
+
+            try (Writer writer = new FileWriter(dataFile)) {
+                Gson gson = new GsonBuilder().create();
+                gson.toJson(obras, writer);
+            } catch (IOException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        else {
-            newHeight = desiredHeight;
-            newWidth = Math.round(desiredHeight * aspectRatio);
         }
-        Image resultingImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-        ImageIcon imageIcon = new ImageIcon(outputImage);
-        return imageIcon;
-    }
-    
+        catch (Exception ex) {
+            //ErrorMessageDialog encuesta = new ErrorMessageDialog(this, true);
+            //encuesta.getLblMessage().setText(ex.getMessage());
+            //encuesta.setVisible(true);
+        }
+    }//GEN-LAST:event_btnInsertarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtRegistroFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRegistroFocusGained
+        // TODO add your handling code here:
+        txtRegistro.selectAll();
+    }//GEN-LAST:event_txtRegistroFocusGained
+
+    private void txtRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegistroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRegistroActionPerformed
+
+    private void txtTituloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTituloFocusGained
+
+    private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTituloActionPerformed
+
+    private void txtAnyFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAnyFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAnyFocusGained
+
+    private void txtAnyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAnyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -394,21 +340,20 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InsertarObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InsertarObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InsertarObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InsertarObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdateObraDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                InsertarObraDialog dialog = new InsertarObraDialog(new javax.swing.JFrame(), true);
+                UpdateObraDialog dialog = new UpdateObraDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
