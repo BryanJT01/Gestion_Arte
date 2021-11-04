@@ -79,12 +79,7 @@ public class DeleteObraDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        /*for (Obra o: mainForm.obras) {
-            comboBox.addItem(o);
-        }
-        UpdateObraComboModel();*/
-        
+        // TODO add your handling code here:  
         UpdateObraComboModel();
         
     }//GEN-LAST:event_formWindowOpened

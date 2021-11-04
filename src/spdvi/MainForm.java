@@ -9,6 +9,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +37,7 @@ public class MainForm extends javax.swing.JFrame {
     private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
+    public String registroIB;
     private boolean dataChanged = false;
     private boolean confirmSave = false;
     public JList<Obra> lstObras;
@@ -51,6 +54,13 @@ public class MainForm extends javax.swing.JFrame {
         lstObras.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstObrasValueChanged(evt);
+            }
+        });
+        lstObras.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                   mouseClickOpus(evt);
+                }
             }
         });
     }
@@ -73,7 +83,6 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem3 = new javax.swing.JMenuItem();
-        jCheckBox1 = new javax.swing.JCheckBox();
         lblImage = new javax.swing.JLabel();
         btnInsert = new javax.swing.JButton();
         btnLoad = new javax.swing.JButton();
@@ -90,8 +99,6 @@ public class MainForm extends javax.swing.JFrame {
         mniDelete = new javax.swing.JMenuItem();
 
         jMenuItem3.setText("jMenuItem3");
-
-        jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,12 +127,6 @@ public class MainForm extends javax.swing.JFrame {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
-            }
-        });
-
-        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jScrollPane1MouseClicked(evt);
             }
         });
 
@@ -331,23 +332,14 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mniUpdateActionPerformed
 
-    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
-        // TODO add your handling code here:
-        Obra selectedObra = lstObras.getSelectedValue();
-        if (selectedObra != null) {
-            for (Obra o: obras) {
-                if (o.getRegistre().equals(selectedObra.getRegistre())) {
-                    UpdateObraDialog updateDialog = new UpdateObraDialog(this, true);
-                    updateDialog.setCodigo(o.getRegistre());
-                    
-                    updateDialog.setVisible(true);
-                    
-                }
-            }            
+    public void mouseClickOpus(java.awt.event.MouseEvent e) {
+        if(e.getClickCount() == 2){
+            UpdateObraDialog uod = new UpdateObraDialog(this, true);
+            uod.setCodigo(lstObras.getSelectedValue().getRegistre());
+            uod.setVisible(true);
         }
+    }
     
-    }//GEN-LAST:event_jScrollPane1MouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -389,7 +381,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;

@@ -7,7 +7,11 @@ package spdvi;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -15,6 +19,7 @@ import javax.imageio.ImageIO;
  */
 public class UpdateObraDialog extends javax.swing.JDialog {
     private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
+    private JFileChooser fileChooser;
     private final MainForm mainForm;
     private String codigo;
     /**
@@ -57,6 +62,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         txtTitulo = new javax.swing.JTextField();
         txtAny = new javax.swing.JTextField();
         lblCodigo = new javax.swing.JLabel();
+        lblImagenName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -167,13 +173,14 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                             .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblObraImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblImagenName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -200,8 +207,10 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLoadImage))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblAutor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblAutor)
+                    .addComponent(lblImagenName, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,13 +242,40 @@ public class UpdateObraDialog extends javax.swing.JDialog {
 
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
-        
-        
+        fileChooser = new JFileChooser();
+        String userFolder = System.getProperty("user.home");
+        int result = fileChooser.showOpenDialog(this);
+        String name = fileChooser.getSelectedFile().getName();
+        if (result == JFileChooser.APPROVE_OPTION) {
+            BufferedImage bufferedImage;
+            try {
+                bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                String outputImageAbsolutePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
+                ImageIcon icon = mainForm.resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
+                lblObraImage.setIcon(icon);
+                lblImagenName.setText(name);
+                File outputImage = new File(outputImageAbsolutePath);
+                ImageIO.write(bufferedImage, "jpg", outputImage);
+            } catch (IOException ex) {
+                ex.getStackTrace();
+            }
+
+        }
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-       
+        for (Obra o: mainForm.obras) {
+            if(o.getRegistre().equals(mainForm.registroIB) ) {
+                o.setRegistre(lblRegistro.getText());
+                o.setTitol(txtTitulo.getText());
+                o.setAny(txtAny.getText());
+                o.setAutor(txtAutor.getText());
+                o.setImagen(lblImagenName.getText());
+            }
+        }
+        mainForm.UpdateObraListView();
+                              
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -340,6 +376,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblFormato;
+    private javax.swing.JLabel lblImagenName;
     private javax.swing.JLabel lblObraImage;
     private javax.swing.JLabel lblRegistro;
     private javax.swing.JLabel lblTitulo;
