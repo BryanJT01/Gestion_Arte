@@ -29,6 +29,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private JFileChooser fileChooser;
     private final MainForm mainForm;
+    private String imagePath = "src/default.jpg";
     //ArrayList<Obra> obras = new ArrayList<Obra>();
     //ArrayList<Obra> obras = new ArrayList<Obra>();
         
@@ -286,7 +287,51 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                 lblError.setText("El registro esta formado solo por numeros");
             } else {
                 
+                
+                fileChooser = new JFileChooser();
+        String userFolder = System.getProperty("user.home");
+        int result = fileChooser.showOpenDialog(this);
+        BufferedImage bufferedImage = null;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                String name = fileChooser.getSelectedFile().getName();
+                
+                bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
+                lblImageName.setText(name);
+                
+                
+            }
+            catch (IOException ioe) {
+                ioe.printStackTrace();
+            }   
+        } else {
+            String name = "default.jpg";
+               
+            try {
+                bufferedImage = ImageIO.read(new File("src/default.jpg"));
+                lblImageName.setText(name);
+            } catch (IOException ex) {
+                Logger.getLogger(InsertarObraDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+                String outputImagePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + "default.jpg";
+                ImageIcon icon = mainForm.resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
+                lblObraImage.setIcon(icon);
+                
+                File outputImage = new File(outputImagePath);
+            try {
+                ImageIO.write(bufferedImage, "jpg", outputImage);
+            } catch (IOException ex) {
+                Logger.getLogger(InsertarObraDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }      
+        }
+                
             lblError.setText("Ok");
+            
+            if (lblImageName == null){
+                lblImageName.setText("default.jpg");
+            }
             
        Obra newObra = new Obra("IB" + txtRegistro.getText(), txtTitulo.getText(), txtAny.getText(), txtFormato.getText(), txtAutor.getText(), lblImageName.getText());
        mainForm.obras.add(newObra);
@@ -316,26 +361,22 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
         fileChooser = new JFileChooser();
-        String userFolder = System.getProperty("user.home");
-        int result = fileChooser.showOpenDialog(this);
-        String name = fileChooser.getSelectedFile().getName();
-        if (result == JFileChooser.APPROVE_OPTION) {
-            try {
-                BufferedImage bufferedImage;
-                bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
-                lblImageName.setText(name);
-                
-                
-                String outputImagePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
-                ImageIcon icon = mainForm.resizeImageIcon(bufferedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
-                lblObraImage.setIcon(icon);
-                
-                File outputImage = new File(outputImagePath);
-                ImageIO.write(bufferedImage, "jpg", outputImage);
-            }
-            catch (IOException ioe) {
-                ioe.printStackTrace();
-            }   
+        fileChooser = new JFileChooser();
+ 
+        int returnOption = fileChooser.showOpenDialog(this);
+        if (returnOption == JFileChooser.APPROVE_OPTION) {
+            imagePath = fileChooser.getSelectedFile().getAbsolutePath();
+            String imageName = fileChooser.getSelectedFile().getName();
+        } else {
+            imagePath = "src/images/default.jpg";
+        }
+        try {
+            BufferedImage selectedImage = ImageIO.read(new File(imagePath));
+             ImageIcon icon = mainForm.resizeImageIcon(selectedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
+            lblObraImage.setIcon(icon);
+        } catch (IOException ioe) {
+            System.err.println("Error en btnImageActionPerformed");
+            System.err.println(ioe);
         }
     }//GEN-LAST:event_btnLoadImageActionPerformed
 
