@@ -275,7 +275,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
             }
         }
         mainForm.UpdateObraListView();
-        
+        mainForm.writeData();
         mainForm.setConfirmSave(true);
        this.setVisible(false); 
     }//GEN-LAST:event_btnActualizarActionPerformed
@@ -305,6 +305,11 @@ public class UpdateObraDialog extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         String codigo = this.getCodigo();
+        String IB = codigo.substring(0,2);
+        if(IB.equals("IB"))
+        {
+                codigo = codigo.substring(2, 10);
+        }
         lblCodigo.setText(codigo);
         for (Obra o: mainForm.obras) {
             if (o.getRegistre().equals("IB" + codigo)){

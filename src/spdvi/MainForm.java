@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,11 +50,18 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(lstObras);
         lstObras = new JList<Obra>();
         jScrollPane1.setViewportView(lstObras);
+        
         lstObras.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstObrasValueChanged(evt);
             }
         });
+        lstObras.addMouseListener(new java.awt.event.MouseAdapter() { //ejecutar mouselistener en la lista
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstObresMouseClicked(evt); //metodo de clicks mostrado abajo
+            }
+        });
+        
     }
     
     public boolean isConfirmSave() {
@@ -334,21 +342,21 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
         // TODO add your handling code here:
-        Obra selectedObra = lstObras.getSelectedValue();
-        if (selectedObra != null) {
-            for (Obra o: obras) {
-                if (o.getRegistre().equals(selectedObra.getRegistre())) {
-                    UpdateObraDialog updateDialog = new UpdateObraDialog(this, true);
-                    updateDialog.setCodigo(o.getRegistre());
-                    
-                    updateDialog.setVisible(true);
-                    
-                }
-            }            
-        }
+        
     
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
+    private void lstObresMouseClicked(java.awt.event.MouseEvent evt) {                                    
+        JList list = (JList)evt.getSource(); //lista evento
+        if (evt.getClickCount() == 2) { //q sea doble click
+            int index = list.locationToIndex(evt.getPoint()); //indice de localuzacion del objeto escogido
+            Obra selectedObra = lstObras.getModel().getElementAt(index); //obra elegida es la de la lista, escoger modelo el elemento del index
+            UpdateObraDialog updateDialog = new UpdateObraDialog(this, true);
+                    updateDialog.setCodigo(selectedObra.getRegistre());
+                    
+                    updateDialog.setVisible(true);
+        }
+    }   
     /**
      * @param args the command line arguments
      */

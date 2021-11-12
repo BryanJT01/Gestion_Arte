@@ -142,7 +142,7 @@ public String codigoIngresado;
                 updateDialog.setCodigo(codigoIngresado);
                 updateDialog.setVisible(true);
                 
-                //this.setVisible(false);
+                this.setVisible(false);
             } else {
                 lblError.setText("No se ha encontrado el codigo IB");
             }
