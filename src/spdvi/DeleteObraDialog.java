@@ -89,6 +89,7 @@ public class DeleteObraDialog extends javax.swing.JDialog {
        Obra selectedObra = (Obra) comboBox.getSelectedItem();
        mainForm.obras.remove(selectedObra);
        mainForm.UpdateObraListView();
+       mainForm.writeData();
        mainForm.lstObras.setSelectedIndex(0);
        mainForm.lstObras.validate();
        UpdateObraComboModel();

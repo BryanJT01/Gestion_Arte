@@ -321,8 +321,10 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 try {
                     BufferedImage selectedImage;
                     if (o.getImagen() != null) {
-                        selectedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json" + o.getImagen()));
-                        lblObraImage.setIcon(mainForm.resizeImageIcon(selectedImage, lblObraImage.getWidth(), lblObraImage.getHeight()));
+                        lblImagenName.setText(o.getImagen());
+                        selectedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
+                        ImageIcon icon = mainForm.resizeImageIcon(selectedImage, lblObraImage.getWidth(), lblObraImage.getHeight());
+                        lblObraImage.setIcon(icon);
                     }
                 } catch (IOException ex) {
                     ex.getStackTrace();
