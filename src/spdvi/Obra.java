@@ -13,6 +13,10 @@ import java.awt.image.BufferedImage;
  */
 public class Obra {
 
+    public Obra() {
+    }
+    
+
     public Obra(String registre, String titol, String any, String format, String autor, String imatge) {
         this.registre = registre;
         this.titol = titol;

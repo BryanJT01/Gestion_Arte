@@ -9,8 +9,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,13 +53,6 @@ public class MainForm extends javax.swing.JFrame {
                 lstObrasValueChanged(evt);
             }
         });
-        lstObras.addMouseListener(new MouseAdapter() {
-        public void mouseClicked(MouseEvent evt) {
-                if (evt.getClickCount() == 2) {
-                   mouseClickOpus(evt);
-                }
-            }
-        });
     }
     
     public boolean isConfirmSave() {
@@ -82,6 +73,7 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem3 = new javax.swing.JMenuItem();
+        jCheckBox1 = new javax.swing.JCheckBox();
         lblImage = new javax.swing.JLabel();
         btnInsert = new javax.swing.JButton();
         btnLoad = new javax.swing.JButton();
@@ -98,6 +90,8 @@ public class MainForm extends javax.swing.JFrame {
         mniDelete = new javax.swing.JMenuItem();
 
         jMenuItem3.setText("jMenuItem3");
+
+        jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,6 +120,12 @@ public class MainForm extends javax.swing.JFrame {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
             }
         });
 
@@ -233,8 +233,8 @@ public class MainForm extends javax.swing.JFrame {
                     try {
                         BufferedImage bufferedImage;
                         if (o.getImagen() == (null)) {
-                           //String noImageFileString = getClass().getResource(imageFolder + 1).toString();
-                           bufferedImage = ImageIO.read(getClass().getResource(imageFolder)); 
+                           String noImageFileString = getClass().getResource(imageFolder + 1).toString();
+                           bufferedImage = ImageIO.read(getClass().getResource(imageFolder + 1)); 
                         }
                         else {
                             String imagePath = imageFolder + o.getImagen();
@@ -281,19 +281,19 @@ public class MainForm extends javax.swing.JFrame {
         btnLoad.doClick();
         InsertarObraDialog InsertDialog = new InsertarObraDialog(this, true);
         InsertDialog.setVisible(true);
-        
-        if (this.confirmSave) {
-        try (Writer writer = new FileWriter(dataFile)) {
+    }//GEN-LAST:event_btnInsertActionPerformed
+
+     void writeData(Obra newObra, String newProfileImageFilePath){
+         try (Writer writer = new FileWriter(dataFile)) {
         Gson gson = new GsonBuilder().create();
         gson.toJson(obras, writer);
-        } catch (IOException ex) {
+        
+         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         UpdateObraListView();
-        dataChanged = true;
-        } 
-    }//GEN-LAST:event_btnInsertActionPerformed
-
+    }
+    
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
        Gson gson = new Gson();
@@ -331,14 +331,23 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mniUpdateActionPerformed
 
-    public void mouseClickOpus(java.awt.event.MouseEvent e) {
-        if(e.getClickCount() == 2){
-            UpdateObraDialog uod = new UpdateObraDialog(this, true);
-            uod.setCodigo(lstObras.getSelectedValue().getRegistre());
-            uod.setVisible(true);
+    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
+        // TODO add your handling code here:
+        Obra selectedObra = lstObras.getSelectedValue();
+        if (selectedObra != null) {
+            for (Obra o: obras) {
+                if (o.getRegistre().equals(selectedObra.getRegistre())) {
+                    UpdateObraDialog updateDialog = new UpdateObraDialog(this, true);
+                    updateDialog.setCodigo(o.getRegistre());
+                    
+                    updateDialog.setVisible(true);
+                    
+                }
+            }            
         }
-    }
     
+    }//GEN-LAST:event_jScrollPane1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -380,6 +389,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -392,5 +402,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu mnuCRUD;
     private javax.swing.JMenu mnuFile;
     // End of variables declaration//GEN-END:variables
+
+
 }
 

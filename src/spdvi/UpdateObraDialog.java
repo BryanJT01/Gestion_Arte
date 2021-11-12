@@ -267,7 +267,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         for (Obra o: mainForm.obras) {
             if(o.getRegistre().equals("IB" + codigo) ) {
-                o.setRegistre(lblRegistro.getText());
+                o.setRegistre(lblCodigo.getText());
                 o.setTitol(txtTitulo.getText());
                 o.setAny(txtAny.getText());
                 o.setAutor(txtAutor.getText());
@@ -316,7 +316,7 @@ public class UpdateObraDialog extends javax.swing.JDialog {
                 try {
                     BufferedImage selectedImage;
                     if (o.getImagen() != null) {
-                        selectedImage = ImageIO.read(new File(imageFolder + o.getImagen()));
+                        selectedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json" + o.getImagen()));
                         lblObraImage.setIcon(mainForm.resizeImageIcon(selectedImage, lblObraImage.getWidth(), lblObraImage.getHeight()));
                     }
                 } catch (IOException ex) {
