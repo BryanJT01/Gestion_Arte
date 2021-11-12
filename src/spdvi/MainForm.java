@@ -35,6 +35,7 @@ public class MainForm extends javax.swing.JFrame {
     private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
     private final String dataFile = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json");
     private final String imageFolder = (System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\");
+    String defaultImagen = "/src/image/default.jpg";
     private boolean dataChanged = false;
     private boolean confirmSave = false;
     public JList<Obra> lstObras;
@@ -234,7 +235,7 @@ public class MainForm extends javax.swing.JFrame {
                         BufferedImage bufferedImage;
                         if (o.getImagen() == (null)) {
                            String noImageFileString = getClass().getResource(imageFolder + 1).toString();
-                           bufferedImage = ImageIO.read(getClass().getResource(imageFolder + 1)); 
+                           bufferedImage = ImageIO.read(new File(defaultImagen)); 
                         }
                         else {
                             String imagePath = imageFolder + o.getImagen();
@@ -283,7 +284,7 @@ public class MainForm extends javax.swing.JFrame {
         InsertDialog.setVisible(true);
     }//GEN-LAST:event_btnInsertActionPerformed
 
-     void writeData(Obra newObra, String newProfileImageFilePath){
+     public void writeData(){
          try (Writer writer = new FileWriter(dataFile)) {
         Gson gson = new GsonBuilder().create();
         gson.toJson(obras, writer);

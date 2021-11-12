@@ -31,9 +31,14 @@ public class InsertarObraDialog extends javax.swing.JDialog {
     private JFileChooser fileChooser;
     private final MainForm mainForm;
     String userFolder = System.getProperty("user.home");
-    String ImagePath = "/src/image/default.jpg";
+    String imagePath = "/src/image/default.jpg";
     BufferedImage bufferedImage;
+    private String imageName;
     //ArrayList<Obra> obras = new ArrayList<Obra>();
+
+    public InsertarObraDialog() {
+        this.mainForm = null;
+    }
         
     /**
      * Creates new form InsertarObraDialog
@@ -294,31 +299,29 @@ public class InsertarObraDialog extends javax.swing.JDialog {
                 
             lblError.setText("Ok");
             
-            
-            
-            
        Obra newObra = new Obra("IB" + txtRegistro.getText(), txtTitulo.getText(), txtAny.getText(), txtFormato.getText(), txtAutor.getText(), lblImageName.getText());
-       guardarInfo(newObra);
+       
        mainForm.obras.add(newObra);
        mainForm.UpdateObraListView();
-       
+       guardarInfo(newObra);
        mainForm.setConfirmSave(true);
-       this.setVisible(false); }
+       this.setVisible(false); 
+            }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     public void guardarInfo(Obra newObra){
         
         try {
             if (profileImageChoosen) {
-                ImagePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
-                mainForm.writeData(newObra, fileChooser.getSelectedFile().getAbsolutePath());
+                imagePath = userFolder + "\\AppData\\Local\\OpusList\\images\\" + fileChooser.getSelectedFile().getName();
+                mainForm.writeData();
                 bufferedImage = ImageIO.read(new File(fileChooser.getSelectedFile().getAbsolutePath()));
             }
             else {
-                mainForm.writeData(newObra, ImagePath);
-                bufferedImage = ImageIO.read(new File(ImagePath));  
+                mainForm.writeData();
+                bufferedImage = ImageIO.read(new File(imagePath));  
             }
-            File outputImage = new File(ImagePath);
+            File outputImage = new File(imagePath);
                 ImageIO.write(bufferedImage, "jpg", outputImage);
         }
         catch (Exception ex) {
@@ -344,7 +347,7 @@ public class InsertarObraDialog extends javax.swing.JDialog {
 
     private void btnLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadImageActionPerformed
         // TODO add your handling code here:
-        
+        fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
